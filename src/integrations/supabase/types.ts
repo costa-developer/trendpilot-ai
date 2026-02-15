@@ -53,6 +53,27 @@ export type Database = {
         }
         Relationships: []
       }
+      roadmap_progress: {
+        Row: {
+          completed_days: number[]
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_days?: number[]
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_days?: number[]
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
