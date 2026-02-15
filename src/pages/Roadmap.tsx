@@ -194,7 +194,7 @@ const Roadmap = () => {
       <div className="container mx-auto max-w-6xl">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="font-display text-3xl font-bold">30-Day Growth Roadmap</h1>
+          <h1 className="font-display text-2xl font-bold sm:text-3xl">30-Day Growth Roadmap</h1>
           <p className="mt-1 text-muted-foreground">
             Your step-by-step plan to grow your YouTube channel in 30 days.
           </p>
@@ -260,15 +260,15 @@ const Roadmap = () => {
 
         {/* Tabs for Calendar / Schedule / Steps */}
         <Tabs defaultValue="calendar" className="space-y-6">
-          <TabsList className="h-11 bg-card shadow-card">
-            <TabsTrigger value="calendar" className="gap-1.5 text-sm">
+          <TabsList className="flex h-auto flex-wrap bg-card shadow-card">
+            <TabsTrigger value="calendar" className="gap-1.5 text-xs sm:text-sm">
               <Calendar className="h-3.5 w-3.5" /> Calendar
             </TabsTrigger>
-            <TabsTrigger value="schedule" className="gap-1.5 text-sm">
+            <TabsTrigger value="schedule" className="gap-1.5 text-xs sm:text-sm">
               <Clock className="h-3.5 w-3.5" /> Schedule
             </TabsTrigger>
-            <TabsTrigger value="steps" className="gap-1.5 text-sm">
-              <Target className="h-3.5 w-3.5" /> Action Steps
+            <TabsTrigger value="steps" className="gap-1.5 text-xs sm:text-sm">
+              <Target className="h-3.5 w-3.5" /> Steps
             </TabsTrigger>
           </TabsList>
 
@@ -329,7 +329,7 @@ const Roadmap = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  <div className="grid grid-cols-4 gap-4 border-b border-border pb-2 text-xs font-semibold text-muted-foreground">
+                  <div className="hidden grid-cols-4 gap-4 border-b border-border pb-2 text-xs font-semibold text-muted-foreground sm:grid">
                     <span>Day</span>
                     <span>Content</span>
                     <span>Type</span>
@@ -342,24 +342,40 @@ const Roadmap = () => {
                       return (
                         <div
                           key={day.day}
-                          className={`grid cursor-pointer grid-cols-4 gap-4 rounded-lg px-2 py-2.5 text-sm transition-colors hover:bg-muted/50 ${
+                          className={`cursor-pointer rounded-lg px-3 py-3 text-sm transition-colors hover:bg-muted/50 ${
                             done ? "bg-primary/5" : ""
                           }`}
                           onClick={() => toggleDay(day.day)}
                         >
-                          <span className="flex items-center gap-2">
+                          {/* Mobile layout */}
+                          <div className="flex flex-wrap items-center gap-2 sm:hidden">
                             {done ? (
                               <CheckCircle2 className="h-4 w-4 text-primary" />
                             ) : (
                               <Circle className="h-4 w-4 text-muted-foreground/30" />
                             )}
                             <span className="font-medium">Day {day.day}</span>
-                          </span>
-                          <span className="truncate">{day.title}</span>
-                          <Badge variant="secondary" className="w-fit text-xs">
-                            {day.contentType}
-                          </Badge>
-                          <span className="text-muted-foreground">{day.postTime}</span>
+                            <span className="text-muted-foreground">·</span>
+                            <span className="truncate">{day.title}</span>
+                            <Badge variant="secondary" className="text-xs">{day.contentType}</Badge>
+                            <span className="ml-auto text-xs text-muted-foreground">{day.postTime}</span>
+                          </div>
+                          {/* Desktop layout */}
+                          <div className="hidden grid-cols-4 gap-4 sm:grid">
+                            <span className="flex items-center gap-2">
+                              {done ? (
+                                <CheckCircle2 className="h-4 w-4 text-primary" />
+                              ) : (
+                                <Circle className="h-4 w-4 text-muted-foreground/30" />
+                              )}
+                              <span className="font-medium">Day {day.day}</span>
+                            </span>
+                            <span className="truncate">{day.title}</span>
+                            <Badge variant="secondary" className="w-fit text-xs">
+                              {day.contentType}
+                            </Badge>
+                            <span className="text-muted-foreground">{day.postTime}</span>
+                          </div>
                         </div>
                       );
                     })}
