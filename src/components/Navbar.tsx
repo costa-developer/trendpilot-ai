@@ -9,6 +9,7 @@ const navItems = [
   { label: "Analysis", path: "/analysis" },
   { label: "Trends", path: "/trends" },
   { label: "AI Generator", path: "/generator" },
+  { label: "Roadmap", path: "/roadmap" },
   { label: "Pricing", path: "/pricing" },
 ];
 

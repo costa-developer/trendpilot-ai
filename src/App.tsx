@@ -12,6 +12,7 @@ import Dashboard from "./pages/Dashboard";
 import Analysis from "./pages/Analysis";
 import Trends from "./pages/Trends";
 import Generator from "./pages/Generator";
+import Roadmap from "./pages/Roadmap";
 import Pricing from "./pages/Pricing";
 import NotFound from "./pages/NotFound";
 
@@ -32,6 +33,7 @@ const App = () => (
             <Route path="/analysis" element={<ProtectedRoute><Analysis /></ProtectedRoute>} />
             <Route path="/trends" element={<ProtectedRoute><Trends /></ProtectedRoute>} />
             <Route path="/generator" element={<ProtectedRoute><Generator /></ProtectedRoute>} />
+            <Route path="/roadmap" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
