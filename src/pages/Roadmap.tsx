@@ -99,18 +99,49 @@ const Roadmap = () => {
   const roadmap = personalizedRoadmap || DEFAULT_ROADMAP;
   const progress = Math.round((completedDays.size / 30) * 100);
 
-  // Load saved progress from localStorage
+  // Load saved progress from database
   useEffect(() => {
-    const saved = localStorage.getItem(`roadmap-progress-${user?.id}`);
-    if (saved) setCompletedDays(new Set(JSON.parse(saved)));
+    if (!user?.id) return;
+    const load = async () => {
+      const { data } = await supabase
+        .from("roadmap_progress")
+        .select("completed_days")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (data?.completed_days) {
+        setCompletedDays(new Set(data.completed_days));
+      }
+    };
+    load();
   }, [user?.id]);
+
+  const saveProgress = async (days: Set<number>) => {
+    if (!user?.id) return;
+    const arr = [...days];
+    const { data: existing } = await supabase
+      .from("roadmap_progress")
+      .select("id")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (existing) {
+      await supabase
+        .from("roadmap_progress")
+        .update({ completed_days: arr, updated_at: new Date().toISOString() })
+        .eq("user_id", user.id);
+    } else {
+      await supabase
+        .from("roadmap_progress")
+        .insert({ user_id: user.id, completed_days: arr });
+    }
+  };
 
   const toggleDay = (day: number) => {
     setCompletedDays((prev) => {
       const next = new Set(prev);
       if (next.has(day)) next.delete(day);
       else next.add(day);
-      localStorage.setItem(`roadmap-progress-${user?.id}`, JSON.stringify([...next]));
+      saveProgress(next);
       return next;
     });
   };
