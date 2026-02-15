@@ -69,9 +69,9 @@ const Dashboard = () => {
     <div className="min-h-screen px-6 py-8">
       <div className="container mx-auto max-w-6xl">
         <div className="mb-10">
-          <h1 className="font-display text-3xl font-bold">Dashboard</h1>
-          <p className="mt-1 text-muted-foreground">Paste a YouTube channel URL to start analyzing.</p>
-          <div className="mt-6 flex gap-3">
+          <h1 className="font-display text-2xl font-bold sm:text-3xl">Dashboard</h1>
+          <p className="mt-1 text-sm text-muted-foreground sm:text-base">Paste a YouTube channel URL to start analyzing.</p>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <div className="relative flex-1">
               <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
@@ -82,7 +82,7 @@ const Dashboard = () => {
                 onKeyDown={(e) => e.key === "Enter" && analyzeChannel()}
               />
             </div>
-            <Button className="h-12 px-6 font-semibold" onClick={analyzeChannel} disabled={loading}>
+            <Button className="h-12 w-full px-6 font-semibold sm:w-auto" onClick={analyzeChannel} disabled={loading}>
               {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Analyze"}
             </Button>
           </div>
@@ -107,12 +107,12 @@ const Dashboard = () => {
         {data && (
           <>
             {/* Channel info */}
-            <Card className="mb-6 flex items-center gap-4 border-0 bg-card p-6 shadow-card">
+            <Card className="mb-6 flex flex-col items-center gap-4 border-0 bg-card p-6 shadow-card sm:flex-row">
               {data.thumbnailUrl && (
-                <img src={data.thumbnailUrl} alt={data.channelTitle} className="h-16 w-16 rounded-full" />
+                <img src={data.thumbnailUrl} alt={data.channelTitle} className="h-16 w-16 shrink-0 rounded-full" />
               )}
-              <div>
-                <h2 className="text-xl font-bold">{data.channelTitle}</h2>
+              <div className="min-w-0 text-center sm:text-left">
+                <h2 className="text-lg font-bold sm:text-xl">{data.channelTitle}</h2>
                 <p className="text-sm text-muted-foreground line-clamp-1">{data.channelDescription}</p>
               </div>
             </Card>

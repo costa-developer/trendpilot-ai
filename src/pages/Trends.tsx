@@ -33,12 +33,12 @@ const Trends = () => {
   return (
     <div className="min-h-screen px-6 py-8">
       <div className="container mx-auto max-w-6xl">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="font-display text-3xl font-bold">Trend Insights</h1>
-            <p className="mt-1 text-muted-foreground">Discover what's trending and find content opportunities.</p>
+            <h1 className="font-display text-2xl font-bold sm:text-3xl">Trend Insights</h1>
+            <p className="mt-1 text-sm text-muted-foreground sm:text-base">Discover what's trending and find content opportunities.</p>
           </div>
-          <Button onClick={fetchTrends} disabled={loading} className="gap-2 font-semibold">
+          <Button onClick={fetchTrends} disabled={loading} className="w-full gap-2 font-semibold sm:w-auto">
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Flame className="h-4 w-4" />}
             {trendingTopics.length > 0 ? "Refresh" : "Generate Insights"}
           </Button>
@@ -73,11 +73,11 @@ const Trends = () => {
                       <span className="text-sm text-muted-foreground">{t.status}</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-8">
-                    <ScoreRing score={t.trendScore} label="Trend" size={80} strokeWidth={6} />
-                    <ScoreRing score={t.velocity} label="Velocity" size={80} strokeWidth={6} />
-                    <ScoreRing score={t.opportunity} label="Opportunity" size={80} strokeWidth={6} />
-                  </div>
+                   <div className="flex flex-wrap items-center gap-4 sm:gap-8">
+                     <ScoreRing score={t.trendScore} label="Trend" size={80} strokeWidth={6} />
+                     <ScoreRing score={t.velocity} label="Velocity" size={80} strokeWidth={6} />
+                     <ScoreRing score={t.opportunity} label="Opportunity" size={80} strokeWidth={6} />
+                   </div>
                 </div>
               </Card>
             ))}

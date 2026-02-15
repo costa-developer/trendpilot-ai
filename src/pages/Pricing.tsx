@@ -50,18 +50,18 @@ const Pricing = () => (
   <div className="min-h-screen px-6 py-16">
     <div className="container mx-auto max-w-5xl">
       <div className="text-center">
-        <h1 className="font-display text-4xl font-bold">Simple, Transparent Pricing</h1>
-        <p className="mx-auto mt-4 max-w-lg text-muted-foreground">
+        <h1 className="font-display text-3xl font-bold sm:text-4xl">Simple, Transparent Pricing</h1>
+        <p className="mx-auto mt-4 max-w-lg text-sm text-muted-foreground sm:text-base">
           Start free and upgrade as you grow. No hidden fees, cancel anytime.
         </p>
       </div>
 
-      <div className="mt-16 grid gap-8 md:grid-cols-3">
+      <div className="mt-12 grid gap-8 sm:mt-16 md:grid-cols-3">
         {plans.map((plan) => (
           <Card
             key={plan.name}
-            className={`relative flex flex-col border-0 p-8 shadow-card transition-all hover:shadow-elevated ${
-              plan.highlighted ? "gradient-warm scale-105 ring-2 ring-secondary/50" : "bg-card"
+            className={`relative flex flex-col border-0 p-6 shadow-card transition-all hover:shadow-elevated sm:p-8 ${
+              plan.highlighted ? "gradient-warm md:scale-105 ring-2 ring-secondary/50" : "bg-card"
             }`}
           >
             {plan.highlighted && (

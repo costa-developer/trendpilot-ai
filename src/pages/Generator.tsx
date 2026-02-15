@@ -46,29 +46,29 @@ const Generator = () => {
   return (
     <div className="min-h-screen px-6 py-8">
       <div className="container mx-auto max-w-5xl">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary/50">
+        <div className="flex items-start gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-secondary/50">
             <Sparkles className="h-5 w-5 text-primary" />
           </div>
-          <div>
-            <h1 className="font-display text-3xl font-bold">AI Content Generator</h1>
-            <p className="text-muted-foreground">AI-powered content ideas, titles, hashtags, and scripts.</p>
+          <div className="min-w-0">
+            <h1 className="font-display text-2xl font-bold sm:text-3xl">AI Content Generator</h1>
+            <p className="text-sm text-muted-foreground sm:text-base">AI-powered content ideas, titles, hashtags, and scripts.</p>
           </div>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-8">
-          <TabsList className="bg-card shadow-card border-0 p-1">
-            <TabsTrigger value="ideas" className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              <Lightbulb className="h-4 w-4" /> Video Ideas
+          <TabsList className="flex h-auto flex-wrap bg-card shadow-card border-0 p-1">
+            <TabsTrigger value="ideas" className="gap-1.5 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:gap-2 sm:text-sm">
+              <Lightbulb className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> Ideas
             </TabsTrigger>
-            <TabsTrigger value="titles" className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              <Type className="h-4 w-4" /> Titles
+            <TabsTrigger value="titles" className="gap-1.5 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:gap-2 sm:text-sm">
+              <Type className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> Titles
             </TabsTrigger>
-            <TabsTrigger value="hashtags" className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              <Hash className="h-4 w-4" /> Hashtags
+            <TabsTrigger value="hashtags" className="gap-1.5 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:gap-2 sm:text-sm">
+              <Hash className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> Hashtags
             </TabsTrigger>
-            <TabsTrigger value="script" className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              <FileText className="h-4 w-4" /> Script
+            <TabsTrigger value="script" className="gap-1.5 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:gap-2 sm:text-sm">
+              <FileText className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> Script
             </TabsTrigger>
           </TabsList>
 
@@ -87,12 +87,12 @@ const Generator = () => {
             )}
             <div className="space-y-3">
               {ideas.map((idea, i) => (
-                <Card key={i} className="flex items-center justify-between border-0 bg-card p-4 shadow-card">
-                  <div className="flex items-center gap-3">
+                <Card key={i} className="flex flex-col gap-3 border-0 bg-card p-4 shadow-card sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex items-center gap-3 min-w-0">
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-secondary/50 text-xs font-bold text-primary">{i + 1}</span>
-                    <span className="text-sm font-medium">{idea.title}</span>
+                    <span className="text-sm font-medium line-clamp-2">{idea.title}</span>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 shrink-0">
                     {idea.viral && <Badge variant="secondary" className="text-xs">🔥 {idea.viral}%</Badge>}
                     <Button variant="ghost" size="sm" onClick={() => copyText(idea.title)}><Copy className="h-3.5 w-3.5" /></Button>
                   </div>

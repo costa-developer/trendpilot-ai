@@ -83,12 +83,12 @@ const Analysis = () => (
         <h3 className="mb-4 text-lg font-bold">Title Pattern Analysis</h3>
         <div className="space-y-3">
           {titlePatterns.map((p) => (
-            <div key={p.pattern} className="flex items-center justify-between rounded-lg bg-background p-4">
-              <div className="flex items-center gap-3">
-                <p.icon className={`h-5 w-5 ${p.effectiveness === "High" ? "text-green-600" : p.effectiveness === "Low" ? "text-red-500" : "text-yellow-500"}`} />
+            <div key={p.pattern} className="flex flex-col gap-2 rounded-lg bg-background p-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-3 min-w-0">
+                <p.icon className={`h-5 w-5 shrink-0 ${p.effectiveness === "High" ? "text-green-600" : p.effectiveness === "Low" ? "text-red-500" : "text-yellow-500"}`} />
                 <span className="text-sm font-medium">{p.pattern}</span>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 shrink-0">
                 <Badge variant={p.effectiveness === "High" ? "default" : "secondary"} className="text-xs">
                   {p.effectiveness}
                 </Badge>
