@@ -6,8 +6,12 @@ import { Sparkles, Lightbulb, Type, Hash, FileText, Copy, RefreshCw, Loader2 } f
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useSubscription } from "@/hooks/useSubscription";
+import UpgradePrompt from "@/components/UpgradePrompt";
 
 const Generator = () => {
+  const { currentPlan, isActive } = useSubscription();
+  const isPro = currentPlan !== "free" && isActive;
   const [activeTab, setActiveTab] = useState("ideas");
   const [loading, setLoading] = useState(false);
   const [ideas, setIdeas] = useState<any[]>([]);
@@ -56,6 +60,11 @@ const Generator = () => {
           </div>
         </div>
 
+        {!isPro ? (
+          <div className="mt-8">
+            <UpgradePrompt feature="AI Content Generator" description="Generate unlimited video ideas, optimized titles, hashtags, and full script outlines with Pro." />
+          </div>
+        ) : (
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-8">
           <TabsList className="flex h-auto flex-wrap bg-card shadow-card border-0 p-1">
             <TabsTrigger value="ideas" className="gap-1.5 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:gap-2 sm:text-sm">
@@ -173,6 +182,7 @@ const Generator = () => {
             )}
           </TabsContent>
         </Tabs>
+        )}
       </div>
     </div>
   );

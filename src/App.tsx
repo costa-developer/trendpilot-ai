@@ -14,6 +14,7 @@ import Trends from "./pages/Trends";
 import Generator from "./pages/Generator";
 import Roadmap from "./pages/Roadmap";
 import Pricing from "./pages/Pricing";
+import Subscription from "./pages/Subscription";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="/generator" element={<ProtectedRoute><Generator /></ProtectedRoute>} />
             <Route path="/roadmap" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/subscription" element={<ProtectedRoute><Subscription /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
