@@ -2,16 +2,20 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Sparkles, Lightbulb, Type, Hash, FileText, Copy, RefreshCw, Loader2 } from "lucide-react";
+import { Sparkles, Lightbulb, Type, Hash, FileText, Copy, RefreshCw, Loader2, Search } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useSubscription } from "@/hooks/useSubscription";
+import { useChannelData } from "@/hooks/useChannelData";
 import UpgradePrompt from "@/components/UpgradePrompt";
+import { useNavigate } from "react-router-dom";
 
 const Generator = () => {
   const { currentPlan, isActive } = useSubscription();
   const isPro = currentPlan !== "free" && isActive;
+  const { channelContext, hasData } = useChannelData();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("ideas");
   const [loading, setLoading] = useState(false);
   const [ideas, setIdeas] = useState<any[]>([]);
@@ -23,7 +27,18 @@ const Generator = () => {
     setLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke("generate-content", {
-        body: { type },
+        body: {
+          type,
+          channelData: channelContext
+            ? {
+                channelTitle: channelContext.channelTitle,
+                subscriberCount: channelContext.subscriberCount,
+                avgViews: channelContext.avgViews,
+                engagementRate: channelContext.engagementRate,
+                topVideos: channelContext.topVideos?.slice(0, 5),
+              }
+            : undefined,
+        },
       });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
@@ -56,7 +71,11 @@ const Generator = () => {
           </div>
           <div className="min-w-0">
             <h1 className="font-display text-2xl font-bold sm:text-3xl">AI Content Generator</h1>
-            <p className="text-sm text-muted-foreground sm:text-base">AI-powered content ideas, titles, hashtags, and scripts.</p>
+            <p className="text-sm text-muted-foreground sm:text-base">
+              {hasData
+                ? `AI-powered content tailored to ${channelContext!.channelTitle}.`
+                : "AI-powered content ideas, titles, hashtags, and scripts."}
+            </p>
           </div>
         </div>
 
@@ -64,6 +83,15 @@ const Generator = () => {
           <div className="mt-8">
             <UpgradePrompt feature="AI Content Generator" description="Generate unlimited video ideas, optimized titles, hashtags, and full script outlines with Pro." />
           </div>
+        ) : !hasData ? (
+          <Card className="mt-8 border-0 bg-card p-12 text-center shadow-card">
+            <Search className="mx-auto h-12 w-12 text-muted-foreground/30" />
+            <h3 className="mt-4 text-lg font-semibold">Analyze a Channel First</h3>
+            <p className="mx-auto mt-1 max-w-md text-sm text-muted-foreground">
+              Go to the Dashboard and analyze your YouTube channel so the AI can generate personalized content for you.
+            </p>
+            <Button className="mt-4" onClick={() => navigate("/dashboard")}>Go to Dashboard</Button>
+          </Card>
         ) : (
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-8">
           <TabsList className="flex h-auto flex-wrap bg-card shadow-card border-0 p-1">
@@ -83,7 +111,7 @@ const Generator = () => {
 
           <TabsContent value="ideas" className="mt-6">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="font-semibold">Trending Video Ideas</h3>
+              <h3 className="font-semibold">Video Ideas for {channelContext!.channelTitle}</h3>
               <Button variant="outline" size="sm" className="gap-2" onClick={() => generate("ideas")} disabled={loading}>
                 {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5" />} Generate
               </Button>
@@ -91,7 +119,7 @@ const Generator = () => {
             {ideas.length === 0 && !loading && (
               <Card className="border-0 bg-card p-8 text-center shadow-card">
                 <Lightbulb className="mx-auto h-10 w-10 text-muted-foreground/30" />
-                <p className="mt-3 text-sm text-muted-foreground">Click "Generate" to get AI-powered video ideas.</p>
+                <p className="mt-3 text-sm text-muted-foreground">Click "Generate" to get AI-powered video ideas based on your channel.</p>
               </Card>
             )}
             <div className="space-y-3">
@@ -112,13 +140,13 @@ const Generator = () => {
 
           <TabsContent value="titles" className="mt-6">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="font-semibold">High-CTR Titles</h3>
+              <h3 className="font-semibold">High-CTR Titles for {channelContext!.channelTitle}</h3>
               <Button variant="outline" size="sm" className="gap-2" onClick={() => generate("titles")} disabled={loading}>
                 {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5" />} Generate
               </Button>
             </div>
             {titles.length === 0 && !loading && (
-              <Card className="border-0 bg-card p-8 text-center shadow-card"><p className="text-sm text-muted-foreground">Click "Generate" to get optimized titles.</p></Card>
+              <Card className="border-0 bg-card p-8 text-center shadow-card"><p className="text-sm text-muted-foreground">Click "Generate" to get optimized titles for your channel.</p></Card>
             )}
             <div className="space-y-3">
               {titles.map((title, i) => (
@@ -132,13 +160,13 @@ const Generator = () => {
 
           <TabsContent value="hashtags" className="mt-6">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="font-semibold">SEO Optimized Hashtags</h3>
+              <h3 className="font-semibold">SEO Hashtags for {channelContext!.channelTitle}</h3>
               <Button variant="outline" size="sm" className="gap-2" onClick={() => generate("hashtags")} disabled={loading}>
                 {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5" />} Generate
               </Button>
             </div>
             {hashtags.length === 0 && !loading ? (
-              <Card className="border-0 bg-card p-8 text-center shadow-card"><p className="text-sm text-muted-foreground">Click "Generate" to get hashtags.</p></Card>
+              <Card className="border-0 bg-card p-8 text-center shadow-card"><p className="text-sm text-muted-foreground">Click "Generate" to get hashtags tailored to your channel.</p></Card>
             ) : (
               <Card className="border-0 bg-card p-6 shadow-card">
                 <div className="mb-3 flex justify-end">
@@ -157,13 +185,13 @@ const Generator = () => {
 
           <TabsContent value="script" className="mt-6">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="font-semibold">Script Outline</h3>
+              <h3 className="font-semibold">Script for {channelContext!.channelTitle}</h3>
               <Button variant="outline" size="sm" className="gap-2" onClick={() => generate("script")} disabled={loading}>
                 {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5" />} Generate
               </Button>
             </div>
             {!script && !loading && (
-              <Card className="border-0 bg-card p-8 text-center shadow-card"><p className="text-sm text-muted-foreground">Click "Generate" to get a script outline.</p></Card>
+              <Card className="border-0 bg-card p-8 text-center shadow-card"><p className="text-sm text-muted-foreground">Click "Generate" to get a personalized script outline.</p></Card>
             )}
             {script && (
               <Card className="border-0 bg-card p-6 shadow-card">
