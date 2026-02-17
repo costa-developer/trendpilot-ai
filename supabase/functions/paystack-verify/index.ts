@@ -45,33 +45,21 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    // Check if subscription exists
-    const { data: existing } = await adminSupabase
+    // Upsert subscription (unique constraint on user_id prevents duplicates)
+    const { error: upsertError } = await adminSupabase
       .from("subscriptions")
-      .select("id")
-      .eq("user_id", user.id)
-      .maybeSingle();
-
-    if (existing) {
-      await adminSupabase
-        .from("subscriptions")
-        .update({
-          plan,
-          status: "active",
-          paystack_reference: reference,
-          paystack_customer_code: customerCode,
-          current_period_end: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-        })
-        .eq("user_id", user.id);
-    } else {
-      await adminSupabase.from("subscriptions").insert({
+      .upsert({
         user_id: user.id,
         plan,
         status: "active",
         paystack_reference: reference,
         paystack_customer_code: customerCode,
         current_period_end: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-      });
+      }, { onConflict: "user_id" });
+
+    if (upsertError) {
+      console.error("Upsert error:", upsertError);
+      throw new Error("Failed to update subscription");
     }
 
     return new Response(
