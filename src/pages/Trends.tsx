@@ -6,8 +6,12 @@ import ScoreRing from "@/components/ScoreRing";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useSubscription } from "@/hooks/useSubscription";
+import UpgradePrompt from "@/components/UpgradePrompt";
 
 const Trends = () => {
+  const { currentPlan, isActive } = useSubscription();
+  const isPro = currentPlan !== "free" && isActive;
   const [trendingTopics, setTrendingTopics] = useState<any[]>([]);
   const [contentGaps, setContentGaps] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -29,6 +33,20 @@ const Trends = () => {
       setLoading(false);
     }
   };
+
+  if (!isPro) {
+    return (
+      <div className="min-h-screen px-6 py-8">
+        <div className="container mx-auto max-w-6xl">
+          <h1 className="font-display text-2xl font-bold sm:text-3xl">Trend Insights</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Discover what's trending and find content opportunities.</p>
+          <div className="mt-8">
+            <UpgradePrompt feature="Trend Insights" description="Unlock AI-powered trend detection, content gap analysis, and opportunity scoring with Pro." />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen px-6 py-8">

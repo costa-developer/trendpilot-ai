@@ -2,6 +2,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { useSubscription } from "@/hooks/useSubscription";
+import UpgradePrompt from "@/components/UpgradePrompt";
 
 const topicPerformance = [
   { topic: "AI Tools", avgViews: 85000, videos: 12 },
@@ -31,11 +33,22 @@ const COLORS = [
   "hsl(23, 50%, 91%)",
 ];
 
-const Analysis = () => (
+const Analysis = () => {
+  const { currentPlan, isActive } = useSubscription();
+  const isPro = currentPlan !== "free" && isActive;
+
+  return (
   <div className="min-h-screen px-6 py-8">
     <div className="container mx-auto max-w-6xl">
       <h1 className="font-display text-3xl font-bold">Channel Analysis</h1>
       <p className="mt-1 text-muted-foreground">Deep-dive into content performance and patterns.</p>
+
+      {!isPro ? (
+        <div className="mt-8">
+          <UpgradePrompt feature="Channel Analysis" description="Get deep-dive analytics on topic performance, content distribution, and title patterns with a Pro plan." />
+        </div>
+      ) : (
+        <>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
         {/* Topic Performance */}
@@ -98,8 +111,11 @@ const Analysis = () => (
           ))}
         </div>
       </Card>
+      </>
+      )}
     </div>
   </div>
-);
+  );
+};
 
 export default Analysis;

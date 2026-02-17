@@ -11,6 +11,7 @@ const navItems = [
   { label: "AI Generator", path: "/generator" },
   { label: "Roadmap", path: "/roadmap" },
   { label: "Pricing", path: "/pricing" },
+  { label: "Subscription", path: "/subscription" },
 ];
 
 const Navbar = () => {
