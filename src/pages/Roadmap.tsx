@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useChannelData } from "@/hooks/useChannelData";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -92,6 +93,7 @@ const CONTENT_TYPE_ICON: Record<string, React.ElementType> = {
 
 const Roadmap = () => {
   const { user } = useAuth();
+  const { channelContext, hasData } = useChannelData();
   const [completedDays, setCompletedDays] = useState<Set<number>>(new Set());
   const [generating, setGenerating] = useState(false);
   const [personalizedRoadmap, setPersonalizedRoadmap] = useState<RoadmapDay[] | null>(null);
@@ -149,25 +151,16 @@ const Roadmap = () => {
   const generatePersonalized = async () => {
     setGenerating(true);
     try {
-      // Get latest analysis for context
-      const { data: analyses } = await supabase
-        .from("analyses")
-        .select("*")
-        .order("created_at", { ascending: false })
-        .limit(1);
-
-      const channelData = analyses?.[0]?.analysis_data as any;
-
       const { data, error } = await supabase.functions.invoke("generate-content", {
         body: {
           type: "ideas",
-          channelData: channelData
+          channelData: channelContext
             ? {
-                channelTitle: analyses?.[0]?.channel_title,
-                subscriberCount: analyses?.[0]?.subscriber_count,
-                avgViews: channelData?.avgViews,
-                engagementRate: channelData?.engagementRate,
-                topVideos: channelData?.topVideos?.slice(0, 5),
+                channelTitle: channelContext.channelTitle,
+                subscriberCount: channelContext.subscriberCount,
+                avgViews: channelContext.avgViews,
+                engagementRate: channelContext.engagementRate,
+                topVideos: channelContext.topVideos?.slice(0, 5),
               }
             : undefined,
         },
@@ -196,7 +189,9 @@ const Roadmap = () => {
         <div className="mb-8">
           <h1 className="font-display text-2xl font-bold sm:text-3xl">30-Day Growth Roadmap</h1>
           <p className="mt-1 text-muted-foreground">
-            Your step-by-step plan to grow your YouTube channel in 30 days.
+            {hasData
+              ? `Your step-by-step plan to grow ${channelContext!.channelTitle}.`
+              : "Your step-by-step plan to grow your YouTube channel in 30 days."}
           </p>
         </div>
 
