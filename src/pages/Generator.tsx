@@ -9,12 +9,13 @@ import { toast } from "sonner";
 import { useSubscription } from "@/hooks/useSubscription";
 import { useChannelData } from "@/hooks/useChannelData";
 import UpgradePrompt from "@/components/UpgradePrompt";
+import ChannelSwitcher from "@/components/ChannelSwitcher";
 import { useNavigate } from "react-router-dom";
 
 const Generator = () => {
   const { currentPlan, isActive } = useSubscription();
   const isPro = currentPlan !== "free" && isActive;
-  const { channelContext, hasData } = useChannelData();
+  const { channelContext, hasData, channels, selectedChannelId, selectChannel } = useChannelData();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("ideas");
   const [loading, setLoading] = useState(false);
@@ -69,7 +70,7 @@ const Generator = () => {
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-secondary/50">
             <Sparkles className="h-5 w-5 text-primary" />
           </div>
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <h1 className="font-display text-2xl font-bold sm:text-3xl">AI Content Generator</h1>
             <p className="text-sm text-muted-foreground sm:text-base">
               {hasData
@@ -77,6 +78,7 @@ const Generator = () => {
                 : "AI-powered content ideas, titles, hashtags, and scripts."}
             </p>
           </div>
+          <ChannelSwitcher channels={channels} selectedId={selectedChannelId} onSelect={selectChannel} />
         </div>
 
         {!isPro ? (

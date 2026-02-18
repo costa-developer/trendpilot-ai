@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useChannelData } from "@/hooks/useChannelData";
+import ChannelSwitcher from "@/components/ChannelSwitcher";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -93,7 +94,7 @@ const CONTENT_TYPE_ICON: Record<string, React.ElementType> = {
 
 const Roadmap = () => {
   const { user } = useAuth();
-  const { channelContext, hasData } = useChannelData();
+  const { channelContext, hasData, channels, selectedChannelId, selectChannel } = useChannelData();
   const [completedDays, setCompletedDays] = useState<Set<number>>(new Set());
   const [generating, setGenerating] = useState(false);
   const [personalizedRoadmap, setPersonalizedRoadmap] = useState<RoadmapDay[] | null>(null);
@@ -187,12 +188,17 @@ const Roadmap = () => {
       <div className="container mx-auto max-w-6xl">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="font-display text-2xl font-bold sm:text-3xl">30-Day Growth Roadmap</h1>
-          <p className="mt-1 text-muted-foreground">
-            {hasData
-              ? `Your step-by-step plan to grow ${channelContext!.channelTitle}.`
-              : "Your step-by-step plan to grow your YouTube channel in 30 days."}
-          </p>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h1 className="font-display text-2xl font-bold sm:text-3xl">30-Day Growth Roadmap</h1>
+              <p className="mt-1 text-muted-foreground">
+                {hasData
+                  ? `Your step-by-step plan to grow ${channelContext!.channelTitle}.`
+                  : "Your step-by-step plan to grow your YouTube channel in 30 days."}
+              </p>
+            </div>
+            <ChannelSwitcher channels={channels} selectedId={selectedChannelId} onSelect={selectChannel} />
+          </div>
         </div>
 
         {/* Progress Overview */}

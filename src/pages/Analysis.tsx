@@ -6,6 +6,7 @@ import { TrendingUp, TrendingDown, Minus, Loader2, Search } from "lucide-react";
 import { useSubscription } from "@/hooks/useSubscription";
 import { useChannelData } from "@/hooks/useChannelData";
 import UpgradePrompt from "@/components/UpgradePrompt";
+import ChannelSwitcher from "@/components/ChannelSwitcher";
 import { useNavigate } from "react-router-dom";
 import { useMemo } from "react";
 
@@ -26,7 +27,7 @@ const COLORS = [
 const Analysis = () => {
   const { currentPlan, isActive } = useSubscription();
   const isPro = currentPlan !== "free" && isActive;
-  const { channelContext, hasData, isLoading } = useChannelData();
+  const { channelContext, hasData, isLoading, channels, selectedChannelId, selectChannel } = useChannelData();
   const navigate = useNavigate();
 
   // Build topic performance from user's video data
@@ -98,12 +99,17 @@ const Analysis = () => {
   return (
     <div className="min-h-screen px-6 py-8">
       <div className="container mx-auto max-w-6xl">
-        <h1 className="font-display text-3xl font-bold">Channel Analysis</h1>
-        <p className="mt-1 text-muted-foreground">
-          {hasData
-            ? `Deep-dive into ${channelContext!.channelTitle}'s content performance.`
-            : "Deep-dive into content performance and patterns."}
-        </p>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="font-display text-3xl font-bold">Channel Analysis</h1>
+            <p className="mt-1 text-muted-foreground">
+              {hasData
+                ? `Deep-dive into ${channelContext!.channelTitle}'s content performance.`
+                : "Deep-dive into content performance and patterns."}
+            </p>
+          </div>
+          <ChannelSwitcher channels={channels} selectedId={selectedChannelId} onSelect={selectChannel} />
+        </div>
 
         {!isPro ? (
           <div className="mt-8">
