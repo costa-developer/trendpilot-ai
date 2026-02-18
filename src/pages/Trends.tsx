@@ -9,12 +9,13 @@ import { toast } from "sonner";
 import { useSubscription } from "@/hooks/useSubscription";
 import { useChannelData } from "@/hooks/useChannelData";
 import UpgradePrompt from "@/components/UpgradePrompt";
+import ChannelSwitcher from "@/components/ChannelSwitcher";
 import { useNavigate } from "react-router-dom";
 
 const Trends = () => {
   const { currentPlan, isActive } = useSubscription();
   const isPro = currentPlan !== "free" && isActive;
-  const { channelContext, hasData } = useChannelData();
+  const { channelContext, hasData, channels, selectedChannelId, selectChannel } = useChannelData();
   const navigate = useNavigate();
   const [trendingTopics, setTrendingTopics] = useState<any[]>([]);
   const [contentGaps, setContentGaps] = useState<any[]>([]);
@@ -90,6 +91,7 @@ const Trends = () => {
             <p className="mt-1 text-sm text-muted-foreground sm:text-base">
               Trends and opportunities for {channelContext!.channelTitle}.
             </p>
+            <ChannelSwitcher channels={channels} selectedId={selectedChannelId} onSelect={selectChannel} />
           </div>
           <Button onClick={fetchTrends} disabled={loading} className="w-full gap-2 font-semibold sm:w-auto">
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Flame className="h-4 w-4" />}
