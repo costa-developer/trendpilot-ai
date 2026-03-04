@@ -1,4 +1,4 @@
-# TubeMetrics — YouTube Channel Analytics & Growth Platform
+# TrendPilot AI — YouTube Channel Analytics & Growth Platform
 
 AI-powered YouTube channel analysis, content generation, trend discovery, and personalized growth roadmaps.
 
@@ -21,8 +21,8 @@ AI-powered YouTube channel analysis, content generation, trend discovery, and pe
 ## Getting Started
 
 ```sh
-git clone <YOUR_GIT_URL>
-cd <YOUR_PROJECT_NAME>
+git clone https://github.com/costa-developer/trendpilot-ai
+cd trendpilot-ai
 npm i
 npm run dev
 ```
@@ -43,4 +43,4 @@ supabase/
 
 ## License
 
-Private — All rights reserved.
+You are free to use it whatever you want
