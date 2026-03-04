@@ -1,73 +1,46 @@
-# Welcome to your Lovable project
+# TubeMetrics — YouTube Channel Analytics & Growth Platform
 
-## Project info
+AI-powered YouTube channel analysis, content generation, trend discovery, and personalized growth roadmaps.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Features
 
-## How can I edit this code?
+- **Channel Analysis** — Analyze any YouTube channel with AI-driven insights on performance, engagement, and content patterns
+- **Multi-Channel Support** — Switch between multiple analyzed channels across all pages
+- **Content Generator** — Generate video titles, descriptions, and content ideas tailored to your channel's style and audience
+- **Trends Discovery** — Surface trending topics and formats relevant to your niche
+- **Growth Roadmap** — Personalized day-by-day growth plan based on your channel data
+- **Subscription Plans** — Free and Pro tiers with Paystack payment integration
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- **Frontend:** React, TypeScript, Vite, Tailwind CSS, shadcn/ui
+- **Backend:** Lovable Cloud (Supabase) — Auth, Database, Edge Functions
+- **AI:** Gemini for channel analysis and content generation
+- **Payments:** Paystack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Getting Started
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
 git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
 cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
 npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Project Structure
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```
+src/
+├── components/       # Reusable UI components (ChannelSwitcher, Navbar, etc.)
+├── contexts/         # Auth context
+├── hooks/            # Custom hooks (useChannelData, useSubscription)
+├── pages/            # Route pages (Dashboard, Analysis, Generator, Trends, Roadmap)
+├── integrations/     # Supabase client & types
+supabase/
+├── functions/        # Edge functions (analyze-channel, generate-content, paystack-*)
+├── migrations/       # Database migrations
+```
 
-**Use GitHub Codespaces**
+## License
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Private — All rights reserved.
